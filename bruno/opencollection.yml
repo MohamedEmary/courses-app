@@ -1,0 +1,108 @@
+opencollection: 1.0.0
+
+info:
+  name: Courses App
+config:
+  proxy:
+    inherit: true
+    config:
+      protocol: http
+      hostname: ""
+      port: ""
+      auth:
+        username: ""
+        password: ""
+      bypassProxy: ""
+
+request:
+  auth:
+    type: bearer
+    token: "{{AUTH_TOKEN}}"
+  variables:
+    - name: AUTH_TOKEN
+      value: ""
+    - name: COURSE_ID
+      value: ""
+docs:
+  content: |-
+    # Courses App API
+
+    REST API for managing courses — **Express + TypeScript + MongoDB**
+    (Mongoose) with **Zod** validation.
+
+    ## Base URL
+
+    - Default: `http://localhost:3000/api` (see `BASE_URL` environment variable)
+
+    ## Variables
+
+    | Variable     | Scope       | Description                                                    |
+    | ------------ | ----------- | -------------------------------------------------------------- |
+    | `BASE_URL`   | environment | API base URL (scheme + host + `/api`). Per-deployment config.  |
+    | `AUTH_TOKEN` | collection  | Access token. Auto-filled by `Login` / `Register`.             |
+    | `COURSE_ID`  | collection  | Id of the last created course. Auto-filled by `Add Course`.    |
+
+    ## Authentication
+
+    - `POST /auth/register` and `POST /auth/login` return an `accessToken`.
+    - A post-response variable stores it in `AUTH_TOKEN`, so every request
+      authenticates automatically through the collection-level **Bearer** auth
+      (`Authorization: Bearer {{AUTH_TOKEN}}`).
+    - Access tokens expire after **15 minutes**. When expired, call
+      `POST /auth/refresh` (the server reads the refresh token from the
+      `httpOnly` cookie) to obtain a new `accessToken`.
+    - `POST /auth/logout` clears the refresh-token cookie.
+
+    ## Roles
+
+    - Emails ending in **`@emary.dev`** register as `admin`; all others as `user`.
+    - `admin` is required for `GET /course` and `DELETE /course/:id`.
+
+    | Endpoint                | Auth   | Role  |
+    | ----------------------- | ------ | ----- |
+    | `POST /auth/register`  | —      | —     |
+    | `POST /auth/login`     | —      | —     |
+    | `POST /auth/refresh`    | cookie | —     |
+    | `POST /auth/logout`     | cookie | —     |
+    | `GET /course`           | Bearer | admin |
+    | `POST /course`          | Bearer | —     |
+    | `GET /course/:id`       | Bearer | —     |
+    | `PATCH /course/:id`     | Bearer | —     |
+    | `DELETE /course/:id`    | Bearer | admin |
+
+    ## Response format (JSend)
+
+    All responses follow the [JSend](https://github.com/omniti-labs/jsend) spec:
+
+    ```json
+    { "status": "success", "data": { ... } }
+    ```
+
+    - `success` → `2xx`, with `data`
+    - `fail` → `4xx`, with `data: { message }`
+    - `error` → `5xx`, with an error object
+
+    ## Courses
+
+    | Field   | Type   | Rules                      |
+    | ------- | ------ | -------------------------- |
+    | `name`  | string | required, min 3 characters |
+    | `price` | number | required, min `500`        |
+
+    - `GET /course` paginates with `limit` (1–20, default `3`) and `page`
+      (default `1`).
+    - `:id` must be a 24-character hex ObjectId.
+
+    ## How to use this collection
+
+    1. Select the **CoursesApp_dev** environment (or create your own).
+    2. Run `Login` (existing user) or `Register` (new user) — fills `AUTH_TOKEN`.
+    3. Run `Add Course` — fills `COURSE_ID`.
+    4. `Get`, `Update`, and `Delete Course` target `COURSE_ID` automatically.
+  type: text/markdown
+bundled: false
+extensions:
+  bruno:
+    ignore:
+      - node_modules
+      - .git

@@ -1,0 +1,24 @@
+info:
+  name: Get Course
+  type: http
+  seq: 2
+
+http:
+  method: GET
+  url: "{{BASE_URL}}/course/{{COURSE_ID}}"
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+docs: |-
+  # Get Course
+
+  Fetches a single course by id.
+
+  - **Auth:** Bearer token (run `Login` or `Register` first)
+  - **Path param:** `COURSE_ID` — auto-set by `Add Course`, or set manually
+  - **Expected:** `200` with `data.course { name, price }`

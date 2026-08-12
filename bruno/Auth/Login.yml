@@ -1,0 +1,42 @@
+info:
+  name: Login
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: "{{BASE_URL}}/auth/login"
+  body:
+    type: json
+    data: |-
+      {
+        "email": "test@emary.dev",
+        "password": "asd123"
+      }
+
+runtime:
+  actions:
+    - type: set-variable
+      phase: after-response
+      selector:
+        expression: res.body.data.accessToken
+        method: jsonq
+      variable:
+        name: AUTH_TOKEN
+        scope: collection
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+docs: |-
+  # Login
+
+  Logs in an existing user. A post-response variable stores the returned
+  `accessToken` in `AUTH_TOKEN` (collection scope), so every other request
+  in the collection authenticates automatically.
+
+  - **Auth:** none
+  - **Expected:** `200` with `data.user` and `data.accessToken`

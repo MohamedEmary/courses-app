@@ -1,0 +1,17 @@
+info:
+  name: Courses
+  type: folder
+  seq: 2
+
+request:
+  auth: inherit
+
+docs:
+  content: |-
+    ## Courses
+
+    CRUD for courses. `Add Course` stores the new record's id in `COURSE_ID`,
+    which `Get` / `Update` / `Delete Course` then use.
+
+    - `Get All Courses` and `Delete Course` require the **admin** role.
+  type: text/markdown

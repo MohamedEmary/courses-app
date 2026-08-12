@@ -1,0 +1,57 @@
+info:
+  name: Register
+  type: http
+  seq: 2
+
+http:
+  method: POST
+  url: "{{BASE_URL}}/auth/register"
+  body:
+    type: multipart-form
+    data:
+      - name: name
+        type: text
+        value: Mohamed
+      - name: email
+        type: text
+        value: test@emary.dev
+      - name: password
+        type: text
+        value: asd123
+      - name: avatar
+        type: file
+        value:
+          - Auth/avatar.png
+
+runtime:
+  actions:
+    - type: set-variable
+      phase: after-response
+      selector:
+        expression: res.body.data.accessToken
+        method: jsonq
+      variable:
+        name: AUTH_TOKEN
+        scope: collection
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+docs: |-
+  # Register
+
+  Creates a new user. A post-response variable stores the returned
+  `accessToken` in `AUTH_TOKEN` (collection scope), so every other request
+  in the collection authenticates automatically.
+
+  - **Auth:** none
+  - **Expected:** `201` with `data.user` and `data.accessToken`
+
+  ## Notes
+
+  - Registering an email that already exists returns an error.
+  - Emails ending in `@emary.dev` are assigned the `admin` role (required
+    for `Get All Courses` and `Delete Course`).

@@ -1,0 +1,23 @@
+info:
+  name: Delete Course
+  type: http
+  seq: 5
+
+http:
+  method: DELETE
+  url: "{{BASE_URL}}/course/{{COURSE_ID}}"
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+docs: |-
+  # Delete Course
+
+  Deletes the course referenced by `COURSE_ID`.
+
+  - **Auth:** Bearer token **+ admin role**
+  - **Expected:** `200` with `data` null

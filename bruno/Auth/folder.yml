@@ -1,0 +1,15 @@
+info:
+  name: Auth
+  type: folder
+  seq: 1
+
+request: {}
+
+docs:
+  content: |-
+    ## Auth
+
+    Registration and login. Both return an `accessToken` that a post-response
+    variable stores in `AUTH_TOKEN`; the rest of the collection uses it
+    automatically via the collection-level Bearer auth.
+  type: text/markdown

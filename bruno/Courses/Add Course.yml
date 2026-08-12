@@ -1,0 +1,44 @@
+info:
+  name: Add Course
+  type: http
+  seq: 3
+
+http:
+  method: POST
+  url: "{{BASE_URL}}/course"
+  body:
+    type: json
+    data: |-
+      {
+        "name": "English",
+        "price": 2000
+      }
+  auth: inherit
+
+runtime:
+  actions:
+    - type: set-variable
+      phase: after-response
+      selector:
+        expression: res.body.data.course._id
+        method: jsonq
+      variable:
+        name: COURSE_ID
+        scope: collection
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+docs: |-
+  # Add Course
+
+  Creates a course. A post-response variable stores the new record's `_id`
+  in `COURSE_ID` (collection scope), so `Get`, `Update`, and `Delete Course`
+  target it automatically.
+
+  - **Auth:** Bearer token (run `Login` or `Register` first)
+  - **Body:** `name` (min 3 chars) and `price` (min 500)
+  - **Expected:** `201` with `data.course`
