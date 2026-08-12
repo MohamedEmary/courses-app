@@ -1,0 +1,9 @@
+{
+  "recommendations": [
+    "dbcode.dbcode",
+    "FanaticPythoner.better-todo-tree",
+    "bruno-api-client.bruno",
+    "dbaeumer.vscode-eslint",
+    "biomejs.biome"
+  ]
+}

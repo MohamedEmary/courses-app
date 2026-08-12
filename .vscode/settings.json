@@ -1,0 +1,51 @@
+{
+  "terminal.integrated.cwd": "${workspaceFolder}/server",
+  "files.exclude": {
+    "**/.git": true,
+    "**/.DS_Store": true,
+    "**/node_modules": true
+  },
+  "better-todo-tree.general.tags": [
+    "BUG",
+    "HACK",
+    "FIXME",
+    "TODO",
+    "XXX",
+    "[ ]",
+    "[x]",
+    "TODO:",
+    "NOTE:",
+    "IMPORTANT:"
+  ],
+  "dbcode.connections": [
+    {
+      "connectionId": "gEr2e0im3ku0T17Opk3KP",
+      "name": "Courses App",
+      "driver": "mongodb",
+      "color": "#009670",
+      "connectionType": "host",
+      "driverOptions": {
+        "protocol": "mongodb://"
+      },
+      "host": "localhost",
+      "port": 27017,
+      "ssl": false,
+      "authMethod": "password",
+      "username": "coursesApp",
+      "savePassword": "secretStorage",
+      "database": "admin",
+      "readOnly": false,
+      "connectionTimeout": 30,
+      "introspection": {
+        "progressive": false
+      }
+    }
+  ],
+  "dbcode.resultLocation": "panel",
+  "markdown.updateLinksOnFileMove.enabled": "prompt",
+  "npm.packageManager": "pnpm",
+  "editor.codeActionsOnSave": {
+    "source.removeUnused.ts": "explicit"
+  },
+  "editor.formatOnSave": true
+}
