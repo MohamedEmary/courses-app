@@ -1,5 +1,10 @@
 import { z } from "zod";
 
+/**
+ * Validates the registration body (`name`, `email`, `password`).
+ *
+ * @returns {z.ZodObject<{ name: z.ZodString; email: z.ZodString; password: z.ZodString }>} The registration schema.
+ */
 const RegisterSchema = z.object({
   name: z
     .string()
@@ -16,6 +21,11 @@ const RegisterSchema = z.object({
     .max(100, "Password Can't Be More Than 100 Characters Long"),
 });
 
+/**
+ * Validates the login body (`email`, `password`).
+ *
+ * @returns {z.ZodObject<{ email: z.ZodString; password: z.ZodString }>} The login schema.
+ */
 const LoginSchema = z.object({
   email: z.string().trim().toLowerCase().pipe(z.email()),
   password: z.string().trim(),
