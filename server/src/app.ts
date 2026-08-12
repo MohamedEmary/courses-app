@@ -5,6 +5,7 @@ import { cookieParser } from "@/middleware/cookieParser.ts";
 import { errorHandler } from "@/middleware/errorHandler.ts";
 import authRoutes from "@/routes/auth.route.ts";
 import courseRoutes from "@/routes/courses.route.ts";
+import userRoutes from "@/routes/users.route.ts";
 import {
   RESPONSE_STATUS,
   UPLOAD_DIR,
@@ -53,6 +54,7 @@ const createApp = () => {
 
   app.use("/api/course", courseRoutes);
   app.use("/api/auth", authRoutes);
+  app.use("/api/users", userRoutes);
 
   // catch all route for undefined routes
   app.all("*path", (_, res) => {
