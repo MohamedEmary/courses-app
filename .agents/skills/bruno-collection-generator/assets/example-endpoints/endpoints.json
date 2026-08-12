@@ -1,0 +1,22 @@
+[
+  {
+    "name": "Get User by ID",
+    "method": "GET",
+    "path": "/users/:id",
+    "folder": "users",
+    "tags": ["smoke", "users"],
+    "path_params": [{"name": "id", "value": "{{userId}}"}],
+    "headers": [{"name": "Accept", "value": "application/json"}],
+    "docs": "Retrieves a single user by ID."
+  },
+  {
+    "name": "Create User",
+    "method": "POST",
+    "path": "/users",
+    "folder": "users",
+    "tags": ["regression", "users"],
+    "headers": [{"name": "Content-Type", "value": "application/json"}],
+    "body": {"name": "Ada Lovelace", "email": "ada@example.com"},
+    "docs": "Creates a new user."
+  }
+]

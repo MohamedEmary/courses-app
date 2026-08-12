@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "skills": {
+    "bruno-collection-generator": {
+      "source": "bruno-collections/bruno-agent-skills",
+      "sourceType": "github",
+      "skillPath": "bruno-collection-generator/SKILL.md",
+      "computedHash": "903d2e9d0922d414af3ef65dd69e742aa6ee6fe56d48dce5983d651d23e8358f"
+    },
+    "code-review": {
+      "source": "mattpocock/skills",
+      "sourceType": "github",
+      "skillPath": "skills/engineering/code-review/SKILL.md",
+      "computedHash": "1d5e7242a98674635be79ab310cdda0e555d36a9903d2526ebf4263d0b7997ca"
+    },
+    "grill-me": {
+      "source": "mattpocock/skills",
+      "sourceType": "github",
+      "skillPath": "skills/productivity/grill-me/SKILL.md",
+      "computedHash": "f361db4e15e6bfd562a9282b1dccda513910a50061f9e838ce017be9c69dde3f"
+    },
+    "node": {
+      "source": "mcollina/skills",
+      "sourceType": "github",
+      "skillPath": "skills/node/SKILL.md",
+      "computedHash": "aba2163ddb3fcf3e6a9d101ac370fabc94055b3e628b125dd084969f1a945993"
+    }
+  }
+}

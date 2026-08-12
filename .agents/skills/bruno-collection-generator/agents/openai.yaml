@@ -1,0 +1,5 @@
+interface:
+  display_name: "Bruno Collection Generator"
+  short_description: "Generate Bruno collections from API sources."
+  icon: "dog"
+  color: "#ECAC42"
