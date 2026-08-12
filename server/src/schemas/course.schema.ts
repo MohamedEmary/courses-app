@@ -1,35 +1,28 @@
 import { z } from "zod";
+import { objectIdParamSchema } from "@/schemas/shared/objectId.schema.ts";
 
+/**
+ * Validates a course creation body (`name`, `price`).
+ *
+ * @returns {z.ZodObject<{ name: z.ZodString; price: z.ZodNumber }>} The course creation schema.
+ */
 const AddCourseSchema = z.object({
   name: z.string().min(3, "Name Must Be At Least 3 Characters Long"),
   price: z.coerce.number().min(500, "Price Must Be At Least 500"),
 });
 
+/**
+ * Validates a course update — every field optional (`name`, `price`).
+ *
+ * @returns {z.ZodObject<{ name?: z.ZodOptional<z.ZodString>; price?: z.ZodOptional<z.ZodNumber> }>} The course update schema.
+ */
 const UpdateCourseSchema = AddCourseSchema.partial();
 
-const courseIdRegex = /^[0-9a-fA-F]{24}$/;
-const CourseIdSchema = z.object({
-  // id should be a hex number of 24 characters
-  id: z.string().regex(courseIdRegex, "Invalid Course ID"),
-});
+/**
+ * Validates the `:id` route param for a course (24-character hex ObjectId).
+ *
+ * @returns {z.ZodObject<{ id: z.ZodString }>} The course id schema.
+ */
+const CourseIdSchema = objectIdParamSchema("Invalid Course ID");
 
-const PaginationSchema = z.object({
-  limit: z.coerce
-    .number()
-    .int("Limit must be an integer")
-    .positive("Limit must be a positive integer")
-    .max(20, "Limit Can't Be More Than 20")
-    .optional(),
-  page: z.coerce
-    .number()
-    .int("Page must be an integer")
-    .positive("Page must be a positive integer")
-    .optional(),
-});
-
-export {
-  AddCourseSchema,
-  CourseIdSchema,
-  PaginationSchema,
-  UpdateCourseSchema,
-};
+export { AddCourseSchema, CourseIdSchema, UpdateCourseSchema };
