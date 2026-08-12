@@ -1,0 +1,26 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    uses: ./.github/workflows/quality.yml
+    secrets: inherit
+
+  deploy:
+    name: Deploy to Render
+    needs: quality
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Render deploy hook
+        env:
+          RENDER_DEPLOY_HOOK_URL: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
+        run: |
+          curl --fail --silent --show-error --location \
+            --request POST "$RENDER_DEPLOY_HOOK_URL"
