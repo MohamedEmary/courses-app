@@ -1,0 +1,16 @@
+services:
+  mongodb:
+    image: mongo:8.2.11
+    container_name: courses-app
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    environment:
+      # Root user bootstrap vars for the mongo image (read from server/.env).
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+
+# Connect: docker exec -it courses-app mongosh -u <user> -p <pass> --authenticationDatabase admin coursesApp
+volumes:
+  mongodb_data:
