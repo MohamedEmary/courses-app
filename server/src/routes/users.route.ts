@@ -24,12 +24,13 @@ router
 
 router.route("/me").get(requireAuth, asyncHandler(getCurrentUser));
 
+const validateUserId = validateRequest({ params: UserIdSchema });
 router
   .route("/:id")
   .delete(
     requireAuth,
     requireRole("admin"),
-    validateRequest({ params: UserIdSchema }),
+    validateUserId,
     asyncHandler(deleteUser),
   );
 
