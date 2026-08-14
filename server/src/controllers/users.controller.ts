@@ -13,13 +13,10 @@ const USER_NOT_FOUND_MESSAGE = "User Not Found";
  * @param {import("express").Request} req - Reads `validatedQuery` for `limit`/`page`.
  * @param {import("express").Response} res - Sends the paginated list of users.
  * @returns {void}
- * @throws {NotFoundError} If no users are found.
  */
 const getAllUsers: RequestHandler = async (req, res) => {
   const { limit, skip } = parsePagination(req.validatedQuery);
   const result = await UserModel.find().limit(limit).skip(skip);
-
-  if (result.length === 0) throw new NotFoundError("No Users Found");
 
   sendSuccess(res, { users: result.map(toSafeUser) });
 };

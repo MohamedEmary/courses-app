@@ -57,13 +57,21 @@ describe("GET /api/users", () => {
     expect(res.status).toBe(403);
   });
 
-  it("returns 404 when there are no users (admin)", async () => {
+  it("returns an empty list when there are no users (admin)", async () => {
     await UserModel.deleteMany({});
     const res = await request(app)
       .get("/api/users")
       .set(auth(admin.accessToken));
-    expect(res.status).toBe(404);
-    expect(res.body.message).toBe("No Users Found");
+    expect(res.status).toBe(200);
+    expect(res.body.data.users).toEqual([]);
+  });
+
+  it("returns an empty list for a page beyond the last one", async () => {
+    const res = await request(app)
+      .get("/api/users?page=999")
+      .set(auth(admin.accessToken));
+    expect(res.status).toBe(200);
+    expect(res.body.data.users).toEqual([]);
   });
 
   it("lists users for an admin without passwords", async () => {

@@ -12,13 +12,10 @@ const COURSE_NOT_FOUND_MESSAGE = "Course Not Found";
  * @param {import("express").Request} req - Reads `validatedQuery` for `limit`/`page`.
  * @param {import("express").Response} res - Sends the paginated list of courses.
  * @returns {void}
- * @throws {NotFoundError} If no courses are found.
  */
 const getAllCourses: RequestHandler = async (req, res) => {
   const { limit, skip } = parsePagination(req.validatedQuery);
   const result = await CourseModel.find().limit(limit).skip(skip);
-
-  if (result.length === 0) throw new NotFoundError("No Courses Found");
 
   sendSuccess(res, { courses: result });
 };
