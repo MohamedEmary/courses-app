@@ -1,0 +1,17 @@
+info:
+  name: Users
+  type: folder
+  seq: 3
+
+request:
+  auth: inherit
+
+docs:
+  content: |-
+    ## Users
+
+    User management. `Get Current User` stores the logged-in user's id in
+    `USER_ID`, which `Delete User` then uses.
+
+    - `Get All Users` and `Delete User` require the **admin** role.
+  type: text/markdown

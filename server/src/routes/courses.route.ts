@@ -12,9 +12,9 @@ import { validateRequest } from "@/middleware/validate.ts";
 import {
   AddCourseSchema,
   CourseIdSchema,
-  PaginationSchema,
   UpdateCourseSchema,
 } from "@/schemas/course.schema.ts";
+import { PaginationSchema } from "@/schemas/shared/pagination.schema.ts";
 import { asyncHandler } from "@/utils/asyncHandler.ts";
 
 const router = Router();

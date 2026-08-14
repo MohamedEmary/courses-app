@@ -14,6 +14,26 @@ Guidance for AI agents working in this repository.
 - The root `.gitignore` ignores `.env`, `node_modules`, `dist`, `uploads`, and `coverage`.
 - There is **no root `package.json`** — all commands run inside `server/`.
 - CI test env vars come from GitHub secrets (`TEST_MONGODB_URI`, `JWT_ACCESS_SECRET`, `JWT_REFRESH_SECRET`) — see `server/AGENTS.md`.
+- **Consistency matters**: match the existing patterns in whichever folder you touch — imports, naming, JSDoc, request files, docs. Never introduce a style that differs from its neighbours (e.g. all `src/` imports use the `@/` alias — see `server/AGENTS.md`).
+
+## Keep docs in sync
+
+After every change, update the project docs it affects **before finishing** — docs must reflect the code at the end of the task, not lag behind it:
+
+- `server/README.md` — endpoint additions/removals, validation rules, env vars, scripts, conventions.
+- `bruno/` collection (`opencollection.yml` + request files) — every endpoint change (see `bruno/AGENTS.md`).
+- `AGENTS.md` / `server/AGENTS.md` / `bruno/AGENTS.md` — when code or conventions change, keep the guidance accurate.
+- Root `README.md` — repo layout / feature overview changes.
+
+**README vs AGENTS separation**: `README.md` files are for humans (setup, usage, API reference); `AGENTS.md` files are for AI agents (conventions, rules). Never put agent rules/conventions (imports, JSDoc, tests, coverage, lint) in a README — they belong in the matching `AGENTS.md`. A README may only _point to_ `AGENTS.md`, never restate its rules.
+
+## Testing
+
+- Don't rerun the test suite unless a change can affect test behavior — e.g. edits to tested code or test files, or fixing a failing test.
+- Skip reruns for changes that can't affect tests: comments, docs/READMEs, config, and Bruno request files (the Bruno collection has no automated tests).
+- For code changes, still run `pnpm typecheck` and `pnpm lint` — they catch compile/format issues without a full test run.
+- Always run `pnpm lint:fix` on code changes — it auto-fixes formatting and import organization (biome `check --write`), so the remaining `pnpm lint` output is only what the linter can't fix automatically (like the intentional `any` warnings).
+- Keep **100% test coverage** — new or edited code must be covered by tests. Run `pnpm test:coverage` (v8 provider over `src/**`, excluding `main.ts`) and add tests for any uncovered statements or branches.
 
 ## OpenCode agent
 

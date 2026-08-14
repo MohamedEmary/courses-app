@@ -33,6 +33,14 @@ runtime:
       variable:
         name: AUTH_TOKEN
         scope: collection
+    - type: set-variable
+      phase: after-response
+      selector:
+        expression: res.body.data.user.id
+        method: jsonq
+      variable:
+        name: USER_ID
+        scope: collection
 
 settings:
   encodeUrl: true
@@ -43,9 +51,10 @@ settings:
 docs: |-
   # Register
 
-  Creates a new user. A post-response variable stores the returned
-  `accessToken` in `AUTH_TOKEN` (collection scope), so every other request
-  in the collection authenticates automatically.
+  Creates a new user. Post-response variables store the returned
+  `accessToken` in `AUTH_TOKEN` and the user id in `USER_ID` (collection
+  scope), so every other request authenticates and targets the logged-in
+  user automatically.
 
   - **Auth:** none
   - **Expected:** `201` with `data.user` and `data.accessToken`

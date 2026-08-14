@@ -10,8 +10,10 @@ A REST API for managing courses, built with **Express + TypeScript + MongoDB (Mo
   - Passwords hashed with **argon2** (never stored or returned in plaintext)
 - **Role-based access control** — `user` and `admin` roles
   - Emails ending in `@emary.dev` are registered as `admin`; all others as `user`
-  - `GET /api/course` and `DELETE /api/course/:id` require the `admin` role
+  - `GET /api/course`, `DELETE /api/course/:id`, `GET /api/users`, and
+    `DELETE /api/users/:id` require the `admin` role
 - **Course CRUD** — create, read, paginated list, update, delete
+- **User management** — list all users (admin), view your own profile (`/users/me`), delete a user (admin)
 - **Avatar uploads** — avatar file upload on registration via **Multer** (jpeg/png/jpg, max 5MB), served statically from `/uploads`
 - **Validation** — Zod schemas for request bodies, params, and query strings
 - **JSend response format** — consistent `{ status, data }` envelope on every response
@@ -36,11 +38,11 @@ server/
 │   ├── main.ts                 # Bootstrap: build the app, connect DB, listen
 │   ├── app.ts                  # Middleware, routing, static uploads
 │   ├── types.d.ts              # Global Express.Request type augmentation
-│   ├── controllers/            # Request handlers (auth, courses)
+│   ├── controllers/            # Request handlers (auth, courses, users)
 │   ├── middleware/             # Auth, role, validation, errors, cookie parsing, upload
 │   ├── models/                 # Mongoose schemas (user, course)
 │   ├── routes/                 # Express routers
-│   ├── schemas/                # Zod validation schemas
+│   ├── schemas/                # Zod validation schemas (shared/ for cross-cutting)
 │   ├── utils/                  # Constants, JWT helpers, async handler, env loading
 │   └── errors/                 # AppError and typed error subclasses
 ├── tests/                      # Vitest unit + integration tests
@@ -171,10 +173,8 @@ the server.
 
 ## Conventions
 
-- **Bruno**: every endpoint has a request file in the [`bruno/`](../bruno/) collection (see [`bruno/AGENTS.md`](../bruno/AGENTS.md)).
-- **Tests**: every function has a test. Test files live under `tests/` mirroring the source path and use the same base name — e.g. `src/utils/jwt.ts` ↔ `tests/unit/utils/jwt.test.ts`.
-- **Utils**: helpers live in `src/utils/` with a filename matching the exported function name (`src/utils/getUserRoleForEmail.ts` exports `getUserRoleForEmail`), and the unit test shares that name.
-- **JSDoc**: every function has a JSDoc block with `@param {Type} name - ...` and `@returns {Type} ...` (`@returns {void}` for void handlers).
+Coding conventions for contributors — imports (`@/` alias), JSDoc, tests,
+100% coverage, lint — are documented in [`AGENTS.md`](AGENTS.md).
 
 ## CI/CD
 
@@ -229,6 +229,16 @@ All course endpoints require a Bearer token (`Authorization: Bearer <token>`).
 | PATCH  | `/course/:id` | Bearer | —     | Update a course                      |
 | DELETE | `/course/:id` | Bearer | admin | Delete a course                      |
 
+### Users — `/users`
+
+All user endpoints require a Bearer token (`Authorization: Bearer <token>`).
+
+| Method | Endpoint     | Auth   | Role  | Description                              |
+| ------ | ------------ | ------ | ----- | ---------------------------------------- |
+| GET    | `/users`     | Bearer | admin | List users (`limit`, `page` query)       |
+| GET    | `/users/me`  | Bearer | —     | Get the authenticated user's own profile |
+| DELETE | `/users/:id` | Bearer | admin | Delete a user                            |
+
 ### Validation Rules
 
 **Users**
@@ -236,6 +246,7 @@ All course endpoints require a Bearer token (`Authorization: Bearer <token>`).
 - `name`: 2–100 chars, letters from any language, spaces, hyphens, apostrophes only
 - `email`: valid email, lowercased
 - `password`: 6–100 chars (registration)
+- `:id`: 24-character hex ObjectId
 
 **Courses**
 
@@ -267,6 +278,7 @@ All course endpoints require a Bearer token (`Authorization: Bearer <token>`).
 
 An API collection lives in `bruno/` at the repository root (OpenCollection YAML). Open that folder in the **Bruno** desktop app to test the endpoints. The collection:
 
-- Uses `{{BASE_URL}}` / `AUTH_TOKEN` / `COURSE_ID` variables
+- Uses `{{BASE_URL}}`, `AUTH_TOKEN`, `COURSE_ID`, and `USER_ID` variables
 - Stores the login/register `accessToken` into the `AUTH_TOKEN` collection variable
 - Auto-captures a newly created course's `_id` into `COURSE_ID` from `POST /course`
+- Auto-captures the logged-in user's id into `USER_ID` from `Login`/`Register` or `GET /users/me`

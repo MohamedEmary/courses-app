@@ -206,12 +206,26 @@ describe("GET /api/course", () => {
     expect(res.status).toBe(403);
   });
 
-  it("returns 404 when there are no courses (admin)", async () => {
+  it("returns an empty list when there are no courses (admin)", async () => {
     const res = await request(app)
       .get("/api/course")
       .set(auth(admin.accessToken));
-    expect(res.status).toBe(404);
-    expect(res.body.message).toBe("No Courses Found");
+    expect(res.status).toBe(200);
+    expect(res.body.data.courses).toEqual([]);
+  });
+
+  it("returns an empty list for a page beyond the last one", async () => {
+    await CourseModel.insertMany(
+      Array.from({ length: 5 }, (_, i) => ({
+        name: `Course ${i + 1}`,
+        price: 500 + i,
+      })),
+    );
+    const res = await request(app)
+      .get("/api/course?page=999")
+      .set(auth(admin.accessToken));
+    expect(res.status).toBe(200);
+    expect(res.body.data.courses).toEqual([]);
   });
 
   it("lists courses for an admin", async () => {

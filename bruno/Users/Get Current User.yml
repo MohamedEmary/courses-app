@@ -1,0 +1,36 @@
+info:
+  name: Get Current User
+  type: http
+  seq: 2
+
+http:
+  method: GET
+  url: "{{BASE_URL}}/users/me"
+  auth: inherit
+
+runtime:
+  actions:
+    - type: set-variable
+      phase: after-response
+      selector:
+        expression: res.body.data.user.id
+        method: jsonq
+      variable:
+        name: USER_ID
+        scope: collection
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+docs: |-
+  # Get Current User
+
+  Returns the profile of the authenticated user. A post-response variable
+  stores the returned user id in `USER_ID` (collection scope), which
+  `Delete User` then uses.
+
+  - **Auth:** Bearer token
+  - **Expected:** `200` with `data.user`

@@ -23,6 +23,8 @@ request:
       value: ""
     - name: COURSE_ID
       value: ""
+    - name: USER_ID
+      value: ""
 docs:
   content: |-
     # Courses App API
@@ -41,6 +43,7 @@ docs:
     | `BASE_URL`   | environment | API base URL (scheme + host + `/api`). Per-deployment config.  |
     | `AUTH_TOKEN` | collection  | Access token. Auto-filled by `Login` / `Register`.             |
     | `COURSE_ID`  | collection  | Id of the last created course. Auto-filled by `Add Course`.    |
+    | `USER_ID`    | collection  | Id of the logged-in user. Auto-filled by `Login` / `Register` / `Get Current User`. |
 
     ## Authentication
 
@@ -56,12 +59,13 @@ docs:
     ## Roles
 
     - Emails ending in **`@emary.dev`** register as `admin`; all others as `user`.
-    - `admin` is required for `GET /course` and `DELETE /course/:id`.
+    - `admin` is required for `GET /course`, `DELETE /course/:id`, `GET /users`,
+      and `DELETE /users/:id`.
 
     | Endpoint                | Auth   | Role  |
     | ----------------------- | ------ | ----- |
-    | `POST /auth/register`  | —      | —     |
-    | `POST /auth/login`     | —      | —     |
+    | `POST /auth/register`   | —      | —     |
+    | `POST /auth/login`      | —      | —     |
     | `POST /auth/refresh`    | cookie | —     |
     | `POST /auth/logout`     | cookie | —     |
     | `GET /course`           | Bearer | admin |
@@ -69,6 +73,9 @@ docs:
     | `GET /course/:id`       | Bearer | —     |
     | `PATCH /course/:id`     | Bearer | —     |
     | `DELETE /course/:id`    | Bearer | admin |
+    | `GET /users`            | Bearer | admin |
+    | `GET /users/me`         | Bearer | —     |
+    | `DELETE /users/:id`     | Bearer | admin |
 
     ## Response format (JSend)
 
@@ -93,12 +100,20 @@ docs:
       (default `1`).
     - `:id` must be a 24-character hex ObjectId.
 
+    ## Users
+
+    - `GET /users` paginates with `limit` (1–20, default `3`) and `page`
+      (default `1`), and never returns passwords.
+    - `GET /users/me` returns the authenticated user's own profile.
+    - `:id` must be a 24-character hex ObjectId.
+
     ## How to use this collection
 
     1. Select the **CoursesApp_dev** environment (or create your own).
-    2. Run `Login` (existing user) or `Register` (new user) — fills `AUTH_TOKEN`.
+    2. Run `Login` (existing user) or `Register` (new user) — fills `AUTH_TOKEN` and `USER_ID`.
     3. Run `Add Course` — fills `COURSE_ID`.
     4. `Get`, `Update`, and `Delete Course` target `COURSE_ID` automatically.
+    5. Run `Get Current User` — fills `USER_ID`, used by `Delete User`.
   type: text/markdown
 bundled: false
 extensions:

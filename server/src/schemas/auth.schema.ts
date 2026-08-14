@@ -1,5 +1,8 @@
 import { z } from "zod";
 
+/**
+ * Validates the registration body (`name`, `email`, `password`).
+ */
 const RegisterSchema = z.object({
   name: z
     .string()
@@ -16,6 +19,9 @@ const RegisterSchema = z.object({
     .max(100, "Password Can't Be More Than 100 Characters Long"),
 });
 
+/**
+ * Validates the login body (`email`, `password`).
+ */
 const LoginSchema = z.object({
   email: z.string().trim().toLowerCase().pipe(z.email()),
   password: z.string().trim(),
