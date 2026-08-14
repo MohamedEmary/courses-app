@@ -2,8 +2,6 @@ import { z } from "zod";
 
 /**
  * Validates the registration body (`name`, `email`, `password`).
- *
- * @returns {z.ZodObject<{ name: z.ZodString; email: z.ZodString; password: z.ZodString }>} The registration schema.
  */
 const RegisterSchema = z.object({
   name: z
@@ -23,8 +21,6 @@ const RegisterSchema = z.object({
 
 /**
  * Validates the login body (`email`, `password`).
- *
- * @returns {z.ZodObject<{ email: z.ZodString; password: z.ZodString }>} The login schema.
  */
 const LoginSchema = z.object({
   email: z.string().trim().toLowerCase().pipe(z.email()),

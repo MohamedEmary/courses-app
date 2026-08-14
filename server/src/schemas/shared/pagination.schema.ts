@@ -3,8 +3,6 @@ import { z } from "zod";
 /**
  * Validates pagination query params (`limit`, `page`). Both are optional;
  * `limit` must be 1–20 and `page` a positive integer.
- *
- * @returns {z.ZodObject<{ limit?: z.ZodOptional<z.ZodNumber>; page?: z.ZodOptional<z.ZodNumber> }>} The pagination schema.
  */
 const PaginationSchema = z.object({
   limit: z.coerce
