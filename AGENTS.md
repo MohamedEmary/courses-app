@@ -32,6 +32,6 @@ The repo ships an AI coding agent you can trigger from a GitHub issue or PR revi
 - **Triggers** on new issue comments and PR review comments whose body contains `opencode` (or `oc`) — `startsWith` or `contains` with a space prefix, so `"/opencode ..."` or a comment mentioning `" opencode"` both fire it.
 - **Model**: `opencode-go/deepseek-v4-flash` (set in the workflow `with.model`).
 - **Access**: only repo **maintainers** (`OWNER` / `MEMBER` / `COLLABORATOR` via `author_association`) can trigger it; comments from other users are ignored.
-- **Auth**: reads `OPENCODE_API_KEY` from repo secrets.
-- **Permissions**: read-only (`contents`, `pull-requests`, `issues` read; `id-token: write` for the action's cloud auth). It can analyze/review the checked-out code and reply, but **cannot push changes** by itself.
+- **Auth**: reads `OPENCODE_API_KEY` from repo secrets; authenticates to GitHub with the workflow's built-in `GITHUB_TOKEN` (`use_github_token: true`), so replies/commits come from `github-actions[bot]` — no OpenCode GitHub App installation needed.
+- **Permissions**: `contents`, `pull-requests`, `issues` **write** (plus `id-token: write` for the action's cloud auth). It can analyze/review the checked-out code, reply in the conversation, and — if asked — push branches and open PRs.
 - **Note**: only runs on comments — there is no manual "Run workflow" dispatch.
