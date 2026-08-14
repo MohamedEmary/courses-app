@@ -1,0 +1,31 @@
+info:
+  name: Get All Users
+  type: http
+  seq: 1
+
+http:
+  method: GET
+  url: "{{BASE_URL}}/users"
+  params:
+    - name: limit
+      value: "3"
+      type: query
+    - name: page
+      value: "1"
+      type: query
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+docs: |-
+  # Get All Users
+
+  Lists users with pagination. Passwords are never returned.
+
+  - **Auth:** Bearer token **+ admin role**
+  - **Query params:** `limit` (1–20, default 3), `page` (default 1)
+  - **Expected:** `200` with `data.users`
