@@ -3,13 +3,12 @@ import { parsePagination } from "@/utils/parsePagination.ts";
 
 describe("parsePagination", () => {
   it("defaults limit to 3 and page to 1 when omitted", () => {
-    expect(parsePagination({})).toEqual({ limit: 3, page: 1, skip: 0 });
+    expect(parsePagination({})).toEqual({ limit: 3, skip: 0 });
   });
 
   it("uses the provided limit and page", () => {
     expect(parsePagination({ limit: 10, page: 3 })).toEqual({
       limit: 10,
-      page: 3,
       skip: 20,
     });
   });
@@ -23,12 +22,10 @@ describe("parsePagination", () => {
   it("falls back to defaults per field independently", () => {
     expect(parsePagination({ limit: 7 })).toEqual({
       limit: 7,
-      page: 1,
       skip: 0,
     });
     expect(parsePagination({ page: 2 })).toEqual({
       limit: 3,
-      page: 2,
       skip: 3,
     });
   });
