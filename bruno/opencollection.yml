@@ -34,7 +34,7 @@ docs:
 
     ## Base URL
 
-    - Default: `http://localhost:3000/api` (see `BASE_URL` environment variable)
+    - Default: `https://courses-app-zffh.onrender.com/api` (see `BASE_URL` environment variable)
 
     ## Variables
 
