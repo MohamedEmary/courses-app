@@ -31,7 +31,7 @@ After every change, update the project docs it affects **before finishing**: doc
 
 - `server/README.md`: endpoint additions/removals, validation rules, env vars, scripts, conventions.
 - `bruno/` collection (`opencollection.yml` + request files): every endpoint change (see `bruno/AGENTS.md`).
-- Root `index.html`: the GitHub Pages API-docs page that inlines the Bruno collection. Ask the user to regenerate it after any `bruno/` change (the agent must not create it; see `bruno/AGENTS.md`).
+- Root `index.html`: the GitHub Pages API-docs page that inlines the Bruno collection. Ask the user to regenerate it after any `bruno/` change, and remind them to re-link `bruno/api-docs-fix.js` (the injected viewer fix) after every regeneration. When collection changes affect the viewer patch, update `bruno/api-docs-fix.js` too (see `bruno/AGENTS.md`; the agent must not create `index.html`).
 - `AGENTS.md` / `server/AGENTS.md` / `bruno/AGENTS.md`: when code or conventions change, keep the guidance accurate.
 - Root `README.md`: repo layout / feature overview changes.
 

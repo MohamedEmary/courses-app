@@ -1,0 +1,8 @@
+#!/bin/sh
+# Re-link bruno/api-docs-fix.js into index.html, when index.html is staged
+# An unstaged regeneration must not be swept into an unrelated commit.
+if [ ! -f index.html ] || git diff --cached --quiet -- index.html; then
+  exit 0
+fi
+node bruno/api-docs-fix.js
+git add index.html
