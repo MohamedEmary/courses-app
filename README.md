@@ -2,6 +2,21 @@
 
 A courses-management project: an **Express + TypeScript REST API** (`server/`) with a **Bruno** API collection (`bruno/`) for manual testing, plus GitHub Actions CI/CD and AI tooling.
 
+## Try the API
+
+Try the deployed API in your browser with the interactive docs page:
+
+- **Docs page**: [https://mohamedemary.github.io/courses-app/](https://mohamedemary.github.io/courses-app/)
+- **Live API base URL**: `https://courses-app-zffh.onrender.com/api`
+
+The docs page runs requests against the deployed API. Recommended flow:
+
+1. Run `Login` (or `Register`) to get an access token.
+2. Run `Add Course` to create a course.
+3. `Get`, `Update`, and `Delete Course`, plus the user endpoints, then use that course and user.
+
+The page is generated from the [`bruno/`](bruno/) collection.
+
 ## Repo layout
 
 - [`server/`](server/): the deployable Express 5 + TypeScript REST API (Mongoose, Zod, JWT + argon2, Multer). **Setup, env vars, scripts, and the API reference live in [`server/README.md`](server/README.md).**
