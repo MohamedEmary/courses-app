@@ -1,7 +1,7 @@
 {
   "name": "courses-app-server",
   "version": "1.0.0",
-  "description": "A courses REST API built with Express 5, MongoDB (Mongoose), and TypeScript — featuring JWT access/refresh auth, role-based access control, Zod validation, avatar uploads (Multer), and JSend responses, tested with Vitest and Supertest.",
+  "description": "A courses REST API built with Express 5, MongoDB (Mongoose), and TypeScript, with JWT access/refresh auth, role-based access control, Zod validation, avatar uploads (Multer), and JSend responses, tested with Vitest and Supertest.",
   "author": "Mohamed Emary",
   "private": true,
   "scripts": {

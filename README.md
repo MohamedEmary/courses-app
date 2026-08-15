@@ -4,11 +4,12 @@ A courses-management project: an **Express + TypeScript REST API** (`server/`) w
 
 ## Repo layout
 
-- [`server/`](server/) — the deployable Express 5 + TypeScript REST API (Mongoose, Zod, JWT + argon2, Multer). **Setup, env vars, scripts, and the API reference live in [`server/README.md`](server/README.md).**
-- [`bruno/`](bruno/) — Bruno API collection (OpenCollection YAML) for exercising the API. Conventions in [`bruno/AGENTS.md`](bruno/AGENTS.md).
-- `.github/workflows/` — GitHub Actions: `pr.yml` (PR checks), `quality.yml` (reusable: lint → typecheck → test → build), `deploy.yml` (merge to `main` → quality + Render deploy), and `opencode.yml` (AI agent you trigger by commenting; maintainers only).
-- `.agents/skills/` — AI skills for this project, usable by any AI agent (`bruno-collection-generator`, `node`, `code-review`, `grill-me` + deps).
-- [`AGENTS.md`](AGENTS.md) — guidance for AI agents working in this repo (also `server/AGENTS.md` and `bruno/AGENTS.md`).
+- [`server/`](server/): the deployable Express 5 + TypeScript REST API (Mongoose, Zod, JWT + argon2, Multer). **Setup, env vars, scripts, and the API reference live in [`server/README.md`](server/README.md).**
+- [`bruno/`](bruno/): Bruno API collection (OpenCollection YAML) for exercising the API. Conventions in [`bruno/AGENTS.md`](bruno/AGENTS.md).
+- [`index.html`](index.html): the generated API-docs page (inline copy of the Bruno collection), served via GitHub Pages.
+- `.github/workflows/`: GitHub Actions. `pr.yml` (PR checks), `quality.yml` (reusable: lint → typecheck → test → build), `deploy.yml` (merge to `main` → quality + Render deploy), and `opencode.yml` (AI agent you trigger by commenting; maintainers only).
+- `.agents/skills/`: AI skills for this project, usable by any AI agent (`bruno-collection-generator`, `node`, `code-review`, `grill-me` + deps).
+- [`AGENTS.md`](AGENTS.md): guidance for AI agents working in this repo (also `server/AGENTS.md` and `bruno/AGENTS.md`).
 
 ```mermaid
 flowchart LR

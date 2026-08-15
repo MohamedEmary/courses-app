@@ -29,7 +29,7 @@ docs:
   content: |-
     # Courses App API
 
-    REST API for managing courses — **Express + TypeScript + MongoDB**
+    REST API for managing courses: **Express + TypeScript + MongoDB**
     (Mongoose) with **Zod** validation.
 
     ## Base URL
@@ -64,17 +64,17 @@ docs:
 
     | Endpoint                | Auth   | Role  |
     | ----------------------- | ------ | ----- |
-    | `POST /auth/register`   | —      | —     |
-    | `POST /auth/login`      | —      | —     |
-    | `POST /auth/refresh`    | cookie | —     |
-    | `POST /auth/logout`     | cookie | —     |
+    | `POST /auth/register`   | -      | -     |
+    | `POST /auth/login`      | -      | -     |
+    | `POST /auth/refresh`    | cookie | -     |
+    | `POST /auth/logout`     | cookie | -     |
     | `GET /course`           | Bearer | admin |
-    | `POST /course`          | Bearer | —     |
-    | `GET /course/:id`       | Bearer | —     |
-    | `PATCH /course/:id`     | Bearer | —     |
+    | `POST /course`          | Bearer | -     |
+    | `GET /course/:id`       | Bearer | -     |
+    | `PATCH /course/:id`     | Bearer | -     |
     | `DELETE /course/:id`    | Bearer | admin |
     | `GET /users`            | Bearer | admin |
-    | `GET /users/me`         | Bearer | —     |
+    | `GET /users/me`         | Bearer | -     |
     | `DELETE /users/:id`     | Bearer | admin |
 
     ## Response format (JSend)
@@ -96,13 +96,13 @@ docs:
     | `name`  | string | required, min 3 characters |
     | `price` | number | required, min `500`        |
 
-    - `GET /course` paginates with `limit` (1–20, default `3`) and `page`
+    - `GET /course` paginates with `limit` (1-20, default `3`) and `page`
       (default `1`).
     - `:id` must be a 24-character hex ObjectId.
 
     ## Users
 
-    - `GET /users` paginates with `limit` (1–20, default `3`) and `page`
+    - `GET /users` paginates with `limit` (1-20, default `3`) and `page`
       (default `1`), and never returns passwords.
     - `GET /users/me` returns the authenticated user's own profile.
     - `:id` must be a 24-character hex ObjectId.
@@ -110,10 +110,10 @@ docs:
     ## How to use this collection
 
     1. Select the **CoursesApp_dev** environment (or create your own).
-    2. Run `Login` (existing user) or `Register` (new user) — fills `AUTH_TOKEN` and `USER_ID`.
-    3. Run `Add Course` — fills `COURSE_ID`.
+    2. Run `Login` (existing user) or `Register` (new user); fills `AUTH_TOKEN` and `USER_ID`.
+    3. Run `Add Course`; fills `COURSE_ID`.
     4. `Get`, `Update`, and `Delete Course` target `COURSE_ID` automatically.
-    5. Run `Get Current User` — fills `USER_ID`, used by `Delete User`.
+    5. Run `Get Current User`; fills `USER_ID`, used by `Delete User`.
   type: text/markdown
 bundled: false
 extensions:

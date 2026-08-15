@@ -4,19 +4,19 @@ A REST API for managing courses, built with **Express + TypeScript + MongoDB (Mo
 
 ## Features
 
-- **Authentication** — register, login, refresh, and logout
+- **Authentication**: register, login, refresh, and logout
   - Access token (JWT) returned in the response body, expires in 15 minutes
   - Refresh token stored in an `httpOnly`, `sameSite: lax` cookie, expires in 7 days
   - Passwords hashed with **argon2** (never stored or returned in plaintext)
-- **Role-based access control** — `user` and `admin` roles
+- **Role-based access control**: `user` and `admin` roles
   - Emails ending in `@emary.dev` are registered as `admin`; all others as `user`
   - `GET /api/course`, `DELETE /api/course/:id`, `GET /api/users`, and
     `DELETE /api/users/:id` require the `admin` role
-- **Course CRUD** — create, read, paginated list, update, delete
-- **User management** — list all users (admin), view your own profile (`/users/me`), delete a user (admin)
-- **Avatar uploads** — avatar file upload on registration via **Multer** (jpeg/png/jpg, max 5MB), served statically from `/uploads`
-- **Validation** — Zod schemas for request bodies, params, and query strings
-- **JSend response format** — consistent `{ status, data }` envelope on every response
+- **Course CRUD**: create, read, paginated list, update, delete
+- **User management**: list all users (admin), view your own profile (`/users/me`), delete a user (admin)
+- **Avatar uploads**: avatar file upload on registration via **Multer** (jpeg/png/jpg, max 5MB), served statically from `/uploads`
+- **Validation**: Zod schemas for request bodies, params, and query strings
+- **JSend response format**: consistent `{ status, data }` envelope on every response
 
 ## Tech Stack
 
@@ -61,8 +61,8 @@ server/
 
 ### Prerequisites
 
-- Node.js (with `pnpm` — the repo pins pnpm via `devEngines.packageManager`)
-- **Docker** (recommended) — `docker-compose.yml` runs a local MongoDB for you.
+- Node.js (with `pnpm`; the repo pins pnpm via `devEngines.packageManager`)
+- **Docker** (recommended): `docker-compose.yml` runs a local MongoDB for you.
   Any MongoDB instance also works.
 
 ### Installation
@@ -76,7 +76,7 @@ pnpm install
 ### Local MongoDB (Docker)
 
 `server/docker-compose.yml` runs a single `mongo:8.2.11` container on port
-`27017` — the quickest way to get the database the API and the tests need. It
+`27017`: the quickest way to get the database the API and the tests need. It
 is **dev-only**: CI uses its own Mongo service container and Render runs its
 own managed database.
 
@@ -115,14 +115,14 @@ Copy `.env.example` to `.env` inside `server/` and fill in the values:
 
 ```bash
 pnpm install          # once
-cp .env.example .env  # once — fill in the values
+cp .env.example .env  # once; fill in the values
 docker compose up -d  # start local MongoDB
 pnpm dev              # start the API (tsx --env-file=.env)
 ```
 
 The API starts on `http://localhost:3000`.
 
-> **CORS**: public API — any origin is allowed (`origin: true` +
+> **CORS**: public API. Any origin is allowed (`origin: true` +
 > `credentials: true`), so browser frontends on any domain can call the API
 > while still sending the refresh-token cookie.
 
@@ -150,7 +150,7 @@ pnpm test:coverage    # run with a coverage report
 
 Integration tests spin up the real Express app (via `src/app.ts`) and need a
 running MongoDB (start one with `docker compose up -d`). They use a dedicated
-`coursesApp_test` database — never the development `coursesApp` database. The
+`coursesApp_test` database; never the development `coursesApp` database. The
 URI comes from the `TEST_MONGODB_URI`
 environment variable (set in `server/.env`, usually pointing at the local
 Docker Mongo instance); `vitest.config.ts` reads it and exposes it to the app
@@ -173,16 +173,16 @@ the server.
 
 ## Conventions
 
-Coding conventions for contributors — imports (`@/` alias), JSDoc, tests,
-100% coverage, lint — are documented in [`AGENTS.md`](AGENTS.md).
+Coding conventions for contributors (imports via the `@/` alias, JSDoc, tests,
+100% coverage, lint) are documented in [`AGENTS.md`](AGENTS.md).
 
 ## CI/CD
 
 GitHub Actions in `.github/workflows/`:
 
-- **`pr.yml`** — runs the shared quality pipeline on every pull request.
-- **`quality.yml`** — reusable workflow: lint → typecheck → test → build (spins up a MongoDB service container for the integration tests).
-- **`deploy.yml`** — on push/merge to `main`: runs quality, then triggers the Render deploy hook.
+- **`pr.yml`**: runs the shared quality pipeline on every pull request.
+- **`quality.yml`**: reusable workflow. lint → typecheck → test → build (spins up a MongoDB service container for the integration tests).
+- **`deploy.yml`**: on push/merge to `main`, runs quality, then triggers the Render deploy hook.
 
 ```mermaid
 flowchart TD
@@ -193,59 +193,59 @@ flowchart TD
 
 Required GitHub repository secrets (Settings → Secrets and variables → Actions):
 
-- `MONGO_INITDB_ROOT_USERNAME`, `MONGO_INITDB_ROOT_PASSWORD` — bootstrap the CI Mongo service container.
-- `TEST_MONGODB_URI` — test DB connection string (must end in `_test`).
-- `JWT_ACCESS_SECRET`, `JWT_REFRESH_SECRET` — used to sign tokens during tests.
-- `RENDER_DEPLOY_HOOK_URL` — Render deploy hook (used by `deploy.yml`).
-- `OPENCODE_API_KEY` — OpenCode agent (used by `opencode.yml`).
+- `MONGO_INITDB_ROOT_USERNAME`, `MONGO_INITDB_ROOT_PASSWORD`: bootstrap the CI Mongo service container.
+- `TEST_MONGODB_URI`: test DB connection string (must end in `_test`).
+- `JWT_ACCESS_SECRET`, `JWT_REFRESH_SECRET`: used to sign tokens during tests.
+- `RENDER_DEPLOY_HOOK_URL`: Render deploy hook (used by `deploy.yml`).
+- `OPENCODE_API_KEY`: OpenCode agent (used by `opencode.yml`).
 
 ## API Reference
 
 Base URL: `http://localhost:3000/api`
 
-### Auth — `/auth`
+### Auth (`/auth`)
 
 | Method | Endpoint         | Body                                                   | Description                             |
 | ------ | ---------------- | ------------------------------------------------------ | --------------------------------------- |
 | POST   | `/auth/register` | `name`, `email`, `password`, `avatar` (file, optional) | Create an account (multipart/form-data) |
 | POST   | `/auth/login`    | `email`, `password`                                    | Log in, returns `accessToken`           |
 
-### Auth — `/auth` (tokens)
+### Auth (`/auth` tokens)
 
 | Method | Endpoint        | Description                                              |
 | ------ | --------------- | -------------------------------------------------------- |
 | POST   | `/auth/refresh` | Exchange the refresh-token cookie for a new access token |
 | POST   | `/auth/logout`  | Clear the refresh-token cookie                           |
 
-### Courses — `/course`
+### Courses (`/course`)
 
 All course endpoints require a Bearer token (`Authorization: Bearer <token>`).
 
 | Method | Endpoint      | Auth   | Role  | Description                          |
 | ------ | ------------- | ------ | ----- | ------------------------------------ |
 | GET    | `/course`     | Bearer | admin | List courses (`limit`, `page` query) |
-| POST   | `/course`     | Bearer | —     | Create a course (`name`, `price`)    |
-| GET    | `/course/:id` | Bearer | —     | Get a single course                  |
-| PATCH  | `/course/:id` | Bearer | —     | Update a course                      |
+| POST   | `/course`     | Bearer | -     | Create a course (`name`, `price`)    |
+| GET    | `/course/:id` | Bearer | -     | Get a single course                  |
+| PATCH  | `/course/:id` | Bearer | -     | Update a course                      |
 | DELETE | `/course/:id` | Bearer | admin | Delete a course                      |
 
-### Users — `/users`
+### Users (`/users`)
 
 All user endpoints require a Bearer token (`Authorization: Bearer <token>`).
 
 | Method | Endpoint     | Auth   | Role  | Description                              |
 | ------ | ------------ | ------ | ----- | ---------------------------------------- |
 | GET    | `/users`     | Bearer | admin | List users (`limit`, `page` query)       |
-| GET    | `/users/me`  | Bearer | —     | Get the authenticated user's own profile |
+| GET    | `/users/me`  | Bearer | -     | Get the authenticated user's own profile |
 | DELETE | `/users/:id` | Bearer | admin | Delete a user                            |
 
 ### Validation Rules
 
 **Users**
 
-- `name`: 2–100 chars, letters from any language, spaces, hyphens, apostrophes only
+- `name`: 2-100 chars, letters from any language, spaces, hyphens, apostrophes only
 - `email`: valid email, lowercased
-- `password`: 6–100 chars (registration)
+- `password`: 6-100 chars (registration)
 - `:id`: 24-character hex ObjectId
 
 **Courses**
@@ -253,7 +253,7 @@ All user endpoints require a Bearer token (`Authorization: Bearer <token>`).
 - `name`: min 3 chars
 - `price`: min 500
 - `:id`: 24-character hex ObjectId
-- Pagination: `limit` 1–20 (default 3), `page` positive integer (default 1)
+- Pagination: `limit` 1-20 (default 3), `page` positive integer (default 1)
 
 ### Response Format (JSend)
 
@@ -269,7 +269,7 @@ All user endpoints require a Bearer token (`Authorization: Bearer <token>`).
 
 1. **Register** (`POST /auth/register`) or **Login** (`POST /auth/login`) → response body contains `data.accessToken`.
 2. Send the access token on protected requests as `Authorization: Bearer <accessToken>`.
-3. When the access token expires (15 min), call `POST /auth/refresh` — the server reads the refresh token from the `httpOnly` cookie and returns a new `accessToken`.
+3. When the access token expires (15 min), call `POST /auth/refresh`; the server reads the refresh token from the `httpOnly` cookie and returns a new `accessToken`.
 4. `POST /auth/logout` clears the refresh-token cookie.
 
 > Note: avatar is only accepted on **register** and uses `multipart/form-data`. Other requests use `application/json`.

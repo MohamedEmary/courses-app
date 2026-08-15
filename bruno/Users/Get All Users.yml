@@ -27,5 +27,5 @@ docs: |-
   Lists users with pagination. Passwords are never returned.
 
   - **Auth:** Bearer token **+ admin role**
-  - **Query params:** `limit` (1–20, default 3), `page` (default 1)
+  - **Query params:** `limit` (1-20, default 3), `page` (default 1)
   - **Expected:** `200` with `data.users`
