@@ -237,7 +237,7 @@ All user endpoints require a Bearer token (`Authorization: Bearer <token>`).
 | ------ | ------------ | ------ | ----- | ---------------------------------------- |
 | GET    | `/users`     | Bearer | admin | List users (`limit`, `page` query)       |
 | GET    | `/users/me`  | Bearer | -     | Get the authenticated user's own profile |
-| DELETE | `/users/:id` | Bearer | admin | Delete a user                            |
+| DELETE | `/users/:id` | Bearer | admin | Delete a user (not your own account)     |
 
 ### Validation Rules
 

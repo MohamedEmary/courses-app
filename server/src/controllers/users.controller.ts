@@ -1,5 +1,5 @@
 import type { RequestHandler } from "express";
-import { NotFoundError } from "@/errors/AppError.ts";
+import { BadRequestError, NotFoundError } from "@/errors/AppError.ts";
 import { toSafeUser, UserModel } from "@/models/user.model.ts";
 import { parsePagination } from "@/utils/parsePagination.ts";
 import { sendSuccess } from "@/utils/sendSuccess.ts";
@@ -39,15 +39,19 @@ const getCurrentUser: RequestHandler = async (req, res) => {
 };
 
 /**
- * Delete a user by id. Admin only.
+ * Delete a user by id. Admin only. An admin cannot delete their own account.
  *
- * @param {import("express").Request} req - Reads `validatedParams.id`.
+ * @param {import("express").Request} req - Reads `validatedParams.id` and `req.userId`.
  * @param {import("express").Response} res - Sends null data on success.
  * @returns {void}
+ * @throws {BadRequestError} If the target user is the authenticated admin.
  * @throws {NotFoundError} If the user does not exist.
  */
 const deleteUser: RequestHandler = async (req, res) => {
   const { id } = req.validatedParams;
+  if (id === req.userId)
+    throw new BadRequestError("Cannot Delete Your Own Account");
+
   const deletedUser = await UserModel.findByIdAndDelete(id);
 
   if (!deletedUser) throw new NotFoundError(USER_NOT_FOUND_MESSAGE);

@@ -132,6 +132,17 @@ describe("DELETE /api/users/:id", () => {
     expect(found).toBeNull();
   });
 
+  it("forbids an admin from deleting their own account", async () => {
+    const res = await request(app)
+      .delete(`/api/users/${admin.body.data.user.id}`)
+      .set(auth(admin.accessToken));
+    expect(res.status).toBe(400);
+    expect(res.body).toEqual({
+      status: "error",
+      message: "Cannot Delete Your Own Account",
+    });
+  });
+
   it("returns 404 when an admin deletes an unknown user", async () => {
     const res = await request(app)
       .delete("/api/users/507f1f77bcf86cd799439011")

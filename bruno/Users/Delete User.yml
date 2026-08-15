@@ -21,3 +21,4 @@ docs: |-
 
   - **Auth:** Bearer token **+ admin role**
   - **Expected:** `200` with `data` null
+  - An admin cannot delete their own account (`400`).

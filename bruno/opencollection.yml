@@ -105,6 +105,8 @@ docs:
     - `GET /users` paginates with `limit` (1-20, default `3`) and `page`
       (default `1`), and never returns passwords.
     - `GET /users/me` returns the authenticated user's own profile.
+    - `DELETE /users/:id` cannot target the authenticated admin's own account
+      (`400`).
     - `:id` must be a 24-character hex ObjectId.
 
     ## How to use this collection
