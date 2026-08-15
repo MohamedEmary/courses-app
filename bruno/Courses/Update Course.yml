@@ -10,7 +10,7 @@ http:
     type: json
     data: |-
       {
-        "name":"Englishhh",
+        "name":"TypeScript",
         "price": 12121
       }
   auth: inherit
