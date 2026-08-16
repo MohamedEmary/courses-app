@@ -236,7 +236,10 @@
         if (auth && needsAuthOverride(headers.get("Authorization"))) {
           headers.set("Authorization", auth);
         }
-        init = Object.assign({}, init, { headers: headers });
+        init = Object.assign({}, init, {
+          headers: headers,
+          credentials: "include",
+        });
         input =
           typeof input === "string"
             ? resolved.url
@@ -282,6 +285,7 @@
       if (auth && needsAuthOverride(existing)) {
         this.setRequestHeader("Authorization", auth);
       }
+      this.withCredentials = true;
     }
     this.addEventListener("load", function () {
       captureText(this.responseText);
