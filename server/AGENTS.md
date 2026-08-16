@@ -57,7 +57,7 @@ Express 5 + TypeScript REST API (Mongoose, Zod, JWT, Multer). Read [`README.md`]
 - **Utils**: helpers live in `src/utils/` with a filename matching the exported function name (e.g. `getUserRoleForEmail` → `src/utils/getUserRoleForEmail.ts`); the unit test shares that name.
 - **Skills**: project AI skills live in `.agents/skills/` (usable by any AI agent): `bruno-collection-generator`, `node`, `code-review`, `grill-me` (+ deps `grilling`, `setup-matt-pocock-skills`).
 - **Architecture**: Express 5; Mongoose models; Zod schemas validated by `validateRequest` (attaches `validatedBody` / `validatedQuery` / `validatedParams`); `asyncHandler` wraps handlers; handlers throw `AppError` subclasses caught by `errorHandler`.
-- **Auth**: JWT access token (15 min) returned in the body; refresh token in an `httpOnly`, `sameSite: lax` cookie at path `/auth/refresh`. Roles: emails ending in `@emary.dev` get `admin`, otherwise `user`.
+- **Auth**: JWT access token (15 min) returned in the body; refresh token in an `httpOnly`, `sameSite: lax` cookie at path `/api/auth/refresh`. Roles: emails ending in `@emary.dev` get `admin`, otherwise `user`.
 - **Responses**: every endpoint uses the JSend envelope (`success` / `fail` / `error`); see README "Response Format".
 - **CORS**: public API: `origin: true, credentials: true` in `app.ts`.
 - **Biome**: `pnpm lint` is expected to report exactly **6 `any` warnings** (intentional, in `src/types.d.ts`, `src/middleware/validate.ts`, and `tests/integration/helpers/api.ts`). Do not "fix" them.
