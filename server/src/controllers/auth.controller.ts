@@ -2,6 +2,7 @@ import { hash, verify } from "argon2";
 import type { RequestHandler } from "express";
 import { ExistingEmailError, UnauthorizedError } from "@/errors/AppError.ts";
 import { UserModel } from "@/models/user.model.ts";
+import { REFRESH_COOKIE_PATH } from "@/utils/constants.ts";
 import { getUserRoleForEmail } from "@/utils/getUserRoleForEmail.ts";
 import { signAccessToken, verifyRefreshToken } from "@/utils/jwt.ts";
 import { sendAuthResponse } from "@/utils/sendAuthResponse.ts";
@@ -89,7 +90,7 @@ const refreshAccessToken: RequestHandler = async (req, res) => {
  * @returns {void}
  */
 const logoutUser: RequestHandler = (_req, res) => {
-  res.clearCookie("refreshToken", { path: "/auth/refresh" });
+  res.clearCookie("refreshToken", { path: REFRESH_COOKIE_PATH });
   // JSend spec: if a call returns no data, data must be null
   sendSuccess(res, null);
 };

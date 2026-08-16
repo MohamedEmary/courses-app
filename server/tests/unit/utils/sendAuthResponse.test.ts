@@ -47,7 +47,7 @@ describe("sendAuthResponse", () => {
       expect.objectContaining({
         httpOnly: true,
         sameSite: "lax",
-        path: "/auth/refresh",
+        path: "/api/auth/refresh",
       }),
     );
 

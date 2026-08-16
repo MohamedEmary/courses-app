@@ -21,6 +21,39 @@ describe("POST /api/auth/refresh", () => {
     expect(res.body.data.accessToken).not.toBe("");
   });
 
+  it("refreshes access token automatically via agent cookie jar after register", async () => {
+    const agent = request.agent(app);
+    await agent
+      .post("/api/auth/register")
+      .field("name", "Register Jar User")
+      .field("email", "reg-jar@example.com")
+      .field("password", "asd123");
+
+    const res = await agent.post("/api/auth/refresh");
+    expect(res.status).toBe(200);
+    expect(res.body.status).toBe("success");
+    expect(typeof res.body.data.accessToken).toBe("string");
+    expect(res.body.data.accessToken).not.toBe("");
+  });
+
+  it("refreshes access token automatically via agent cookie jar after login", async () => {
+    await registerUser(app, {
+      email: "login-jar@example.com",
+      password: "password123",
+    });
+
+    const agent = request.agent(app);
+    await agent
+      .post("/api/auth/login")
+      .send({ email: "login-jar@example.com", password: "password123" });
+
+    const res = await agent.post("/api/auth/refresh");
+    expect(res.status).toBe(200);
+    expect(res.body.status).toBe("success");
+    expect(typeof res.body.data.accessToken).toBe("string");
+    expect(res.body.data.accessToken).not.toBe("");
+  });
+
   it("returns 401 when no refresh cookie is sent", async () => {
     const res = await request(app).post("/api/auth/refresh");
     expect(res.status).toBe(401);
@@ -81,17 +114,33 @@ describe("POST /api/auth/logout", () => {
     expect(res.body).toEqual({ status: "success", data: null });
   });
 
-  it("clears the refresh cookie scoped to /auth/refresh", async () => {
+  it("clears the refresh cookie scoped to /api/auth/refresh", async () => {
     const res = await request(app).post("/api/auth/logout");
     const setCookie = getSetCookie(res.headers).join("; ");
     expect(setCookie).toContain("refreshToken=;");
-    expect(setCookie).toContain("Path=/auth/refresh");
+    expect(setCookie).toContain("Path=/api/auth/refresh");
     expect(setCookie).toMatch(/Max-Age=0|Expires=/i);
   });
 
   it("works without being logged in (stateless)", async () => {
     const res = await request(app).post("/api/auth/logout");
     expect(res.status).toBe(200);
+  });
+
+  it("clears the session in an agent cookie jar so subsequent refresh fails", async () => {
+    const agent = request.agent(app);
+    await agent
+      .post("/api/auth/register")
+      .field("name", "Logout User")
+      .field("email", "logout-jar@example.com")
+      .field("password", "asd123");
+
+    const logoutRes = await agent.post("/api/auth/logout");
+    expect(logoutRes.status).toBe(200);
+
+    const refreshRes = await agent.post("/api/auth/refresh");
+    expect(refreshRes.status).toBe(401);
+    expect(refreshRes.body.message).toBe("Missing Or Invalid Refresh Token");
   });
 });
 
@@ -114,14 +163,14 @@ describe("POST /api/auth/register", () => {
     expect(JSON.stringify(body)).not.toContain("$argon2");
   });
 
-  it("sets an httpOnly refresh cookie scoped to /auth/refresh", async () => {
+  it("sets an httpOnly refresh cookie scoped to /api/auth/refresh", async () => {
     const { setCookie } = await registerUser(app, {
       email: "cookie@example.com",
     });
     const joined = setCookie.join("; ");
     expect(joined).toMatch(/^refreshToken=.+$/);
     expect(joined).toContain("HttpOnly");
-    expect(joined).toContain("Path=/auth/refresh");
+    expect(joined).toContain("Path=/api/auth/refresh");
     expect(joined).toContain("SameSite=Lax");
   });
 

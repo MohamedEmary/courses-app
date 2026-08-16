@@ -43,6 +43,9 @@ const API_ROUTES = {
   USERS: "/api/users",
 } as const;
 
+/** URL path the refresh-token cookie is scoped to. */
+const REFRESH_COOKIE_PATH = `${API_ROUTES.AUTH}/refresh`;
+
 /**
  * Cookie options for the `refreshToken` (httpOnly, sent only to the refresh endpoint).
  */
@@ -52,7 +55,7 @@ const REFRESH_COOKIE_OPTIONS = {
   sameSite: "lax",
   maxAge: REFRESH_TOKEN_AGE_DAYS * 24 * 60 * 60 * 1000,
   // The cookie should only be sent to the refresh token endpoint
-  path: "/auth/refresh",
+  path: REFRESH_COOKIE_PATH,
 } as const;
 
 /** URL segment used in public URLs (e.g. /uploads/avatar.png) and the folder name on disk. */
@@ -80,10 +83,12 @@ const MAX_FILE_SIZE_MB = 5;
 export {
   ACCESS_TOKEN_AGE_MINUTES,
   ALLOWED_FILE_TYPES,
+  API_ROUTES,
   COMPANY_DOMAIN,
   DEFAULT_AVATAR,
   MAX_FILE_SIZE_MB,
   REFRESH_COOKIE_OPTIONS,
+  REFRESH_COOKIE_PATH,
   REFRESH_TOKEN_AGE_DAYS,
   RESPONSE_STATUS,
   UPLOAD_DIR,
