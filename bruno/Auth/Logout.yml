@@ -1,0 +1,22 @@
+info:
+  name: Logout
+  type: http
+  seq: 4
+
+http:
+  method: POST
+  url: "{{BASE_URL}}/auth/logout"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+docs: |-
+  # Logout
+
+  Logs out the user by clearing the `refreshToken` cookie on path `/api/auth/refresh`.
+
+  - **Auth:** cookie (`refreshToken`)
+  - **Expected:** `200` with `data: null`

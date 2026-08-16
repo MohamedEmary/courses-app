@@ -1,0 +1,35 @@
+info:
+  name: Refresh Token
+  type: http
+  seq: 3
+
+http:
+  method: POST
+  url: "{{BASE_URL}}/auth/refresh"
+
+runtime:
+  actions:
+    - type: set-variable
+      phase: after-response
+      selector:
+        expression: res.body.data.accessToken
+        method: jsonq
+      variable:
+        name: AUTH_TOKEN
+        scope: collection
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+docs: |-
+  # Refresh Token
+
+  Exchanges the `refreshToken` cookie for a new `accessToken`. Post-response
+  variables store the returned `accessToken` in `AUTH_TOKEN` (collection
+  scope), so subsequent requests continue to authenticate.
+
+  - **Auth:** cookie (`refreshToken`, sent automatically by Bruno after `Login` or `Register`)
+  - **Expected:** `200` with `data.accessToken`

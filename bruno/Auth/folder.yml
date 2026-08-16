@@ -9,7 +9,8 @@ docs:
   content: |-
     ## Auth
 
-    Registration and login. Both return an `accessToken` that a post-response
-    variable stores in `AUTH_TOKEN`; the rest of the collection uses it
-    automatically via the collection-level Bearer auth.
+    User authentication: registration, login, token refresh, and logout.
+    `Login`, `Register`, and `Refresh Token` store the returned `accessToken`
+    in `AUTH_TOKEN`; the rest of the collection uses it automatically via
+    collection-level Bearer auth.
   type: text/markdown

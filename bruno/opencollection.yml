@@ -38,11 +38,11 @@ docs:
 
     ## Variables
 
-    | Variable     | Scope       | Description                                                    |
-    | ------------ | ----------- | -------------------------------------------------------------- |
-    | `BASE_URL`   | environment | API base URL (scheme + host + `/api`). Per-deployment config.  |
-    | `AUTH_TOKEN` | collection  | Access token. Auto-filled by `Login` / `Register`.             |
-    | `COURSE_ID`  | collection  | Id of the last created course. Auto-filled by `Add Course`.    |
+    | Variable     | Scope       | Description                                                                         |
+    | ------------ | ----------- | ----------------------------------------------------------------------------------- |
+    | `BASE_URL`   | environment | API base URL (scheme + host + `/api`). Per-deployment config.                       |
+    | `AUTH_TOKEN` | collection  | Access token. Auto-filled by `Login` / `Register` / `Refresh Token`.                |
+    | `COURSE_ID`  | collection  | Id of the last created course. Auto-filled by `Add Course`.                         |
     | `USER_ID`    | collection  | Id of the logged-in user. Auto-filled by `Login` / `Register` / `Get Current User`. |
 
     ## Authentication
