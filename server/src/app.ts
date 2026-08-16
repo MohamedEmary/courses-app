@@ -7,6 +7,7 @@ import authRoutes from "@/routes/auth.route.ts";
 import courseRoutes from "@/routes/courses.route.ts";
 import userRoutes from "@/routes/users.route.ts";
 import {
+  API_ROUTES,
   RESPONSE_STATUS,
   UPLOAD_DIR,
   UPLOAD_DIR_PATH,
@@ -52,9 +53,9 @@ const createApp = () => {
   // Serve uploads only under the /uploads URL prefix.
   app.use(`/${UPLOAD_DIR}`, express.static(UPLOAD_DIR_PATH));
 
-  app.use("/api/course", courseRoutes);
-  app.use("/api/auth", authRoutes);
-  app.use("/api/users", userRoutes);
+  app.use(API_ROUTES.COURSES, courseRoutes);
+  app.use(API_ROUTES.AUTH, authRoutes);
+  app.use(API_ROUTES.USERS, userRoutes);
 
   // catch all route for undefined routes
   app.all("*path", (_, res) => {

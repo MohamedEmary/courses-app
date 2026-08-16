@@ -35,6 +35,15 @@ const ACCESS_TOKEN_AGE_MINUTES = 15;
 const REFRESH_TOKEN_AGE_DAYS = 7;
 
 /**
+ * Base route paths for the API routers.
+ */
+const API_ROUTES = {
+  AUTH: "/api/auth",
+  COURSES: "/api/course",
+  USERS: "/api/users",
+} as const;
+
+/**
  * Cookie options for the `refreshToken` (httpOnly, sent only to the refresh endpoint).
  */
 const REFRESH_COOKIE_OPTIONS = {
