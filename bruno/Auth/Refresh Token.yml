@@ -33,3 +33,7 @@ docs: |-
 
   - **Auth:** cookie (`refreshToken`, sent automatically by Bruno after `Login` or `Register`)
   - **Expected:** `200` with `data.accessToken`
+
+  ## Notes
+
+  - Fails in browser-based interactive docs due to cross-site cookie restrictions; use the Bruno desktop app.

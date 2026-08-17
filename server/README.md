@@ -269,7 +269,7 @@ All user endpoints require a Bearer token (`Authorization: Bearer <token>`).
 
 1. **Register** (`POST /auth/register`) or **Login** (`POST /auth/login`) → response body contains `data.accessToken`.
 2. Send the access token on protected requests as `Authorization: Bearer <accessToken>`.
-3. When the access token expires (15 min), call `POST /auth/refresh`; the server reads the refresh token from the `httpOnly` cookie and returns a new `accessToken`.
+3. When the access token expires (15 min), call `POST /auth/refresh`; the server reads the refresh token from the `httpOnly` cookie and returns a new `accessToken` (Interactive html docs cannot send cross-site cookies; test in Bruno desktop).
 4. `POST /auth/logout` clears the refresh-token cookie.
 
 > Note: avatar is only accepted on **register** and uses `multipart/form-data`. Other requests use `application/json`.
