@@ -8,20 +8,17 @@ import {
 import { uploadAvatar } from "@/middleware/uploadAvatar.ts";
 import { validateRequest } from "@/middleware/validate.ts";
 import { LoginSchema, RegisterSchema } from "@/schemas/auth.schema.ts";
-import { asyncHandler } from "@/utils/asyncHandler.ts";
 
 const router = Router();
 
-router
-  .route("/login")
-  .post(validateRequest({ body: LoginSchema }), asyncHandler(loginUser));
+router.route("/login").post(validateRequest({ body: LoginSchema }), loginUser);
 router.route("/register").post(
   // Multer must run first: it parses the multipart body into req.body and req.file.
   uploadAvatar.single("avatar"),
   validateRequest({ body: RegisterSchema }),
-  asyncHandler(registerUser),
+  registerUser,
 );
-router.route("/refresh").post(asyncHandler(refreshAccessToken));
-router.route("/logout").post(asyncHandler(logoutUser));
+router.route("/refresh").post(refreshAccessToken);
+router.route("/logout").post(logoutUser);
 
 export default router;

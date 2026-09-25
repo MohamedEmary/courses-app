@@ -9,7 +9,6 @@ import { requireRole } from "@/middleware/requireRole.ts";
 import { validateRequest } from "@/middleware/validate.ts";
 import { PaginationSchema } from "@/schemas/shared/pagination.schema.ts";
 import { UserIdSchema } from "@/schemas/user.schema.ts";
-import { asyncHandler } from "@/utils/asyncHandler.ts";
 
 const router = Router();
 
@@ -19,19 +18,14 @@ router
     requireAuth,
     requireRole("admin"),
     validateRequest({ query: PaginationSchema }),
-    asyncHandler(getAllUsers),
+    getAllUsers,
   );
 
-router.route("/me").get(requireAuth, asyncHandler(getCurrentUser));
+router.route("/me").get(requireAuth, getCurrentUser);
 
 const validateUserId = validateRequest({ params: UserIdSchema });
 router
   .route("/:id")
-  .delete(
-    requireAuth,
-    requireRole("admin"),
-    validateUserId,
-    asyncHandler(deleteUser),
-  );
+  .delete(requireAuth, requireRole("admin"), validateUserId, deleteUser);
 
 export default router;

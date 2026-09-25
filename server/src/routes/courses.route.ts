@@ -15,7 +15,6 @@ import {
   UpdateCourseSchema,
 } from "@/schemas/course.schema.ts";
 import { PaginationSchema } from "@/schemas/shared/pagination.schema.ts";
-import { asyncHandler } from "@/utils/asyncHandler.ts";
 
 const router = Router();
 
@@ -25,29 +24,20 @@ router
     requireAuth,
     requireRole("admin"),
     validateRequest({ query: PaginationSchema }),
-    asyncHandler(getAllCourses),
+    getAllCourses,
   )
-  .post(
-    requireAuth,
-    validateRequest({ body: AddCourseSchema }),
-    asyncHandler(createCourse),
-  );
+  .post(requireAuth, validateRequest({ body: AddCourseSchema }), createCourse);
 
 const validateCourseId = validateRequest({ params: CourseIdSchema });
 router
   .route("/:id")
-  .get(requireAuth, validateCourseId, asyncHandler(getCourseById))
+  .get(requireAuth, validateCourseId, getCourseById)
   .patch(
     requireAuth,
     validateCourseId,
     validateRequest({ body: UpdateCourseSchema }),
-    asyncHandler(updateCourse),
+    updateCourse,
   )
-  .delete(
-    requireAuth,
-    requireRole("admin"),
-    validateCourseId,
-    asyncHandler(deleteCourse),
-  );
+  .delete(requireAuth, requireRole("admin"), validateCourseId, deleteCourse);
 
 export default router;
