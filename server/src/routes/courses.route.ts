@@ -18,26 +18,27 @@ import { PaginationSchema } from "@/schemas/shared/pagination.schema.ts";
 
 const router = Router();
 
+// Every course route is authenticated.
+router.use(requireAuth);
+
 router
   .route("/")
   .get(
-    requireAuth,
     requireRole("admin"),
     validateRequest({ query: PaginationSchema }),
     getAllCourses,
   )
-  .post(requireAuth, validateRequest({ body: AddCourseSchema }), createCourse);
+  .post(validateRequest({ body: AddCourseSchema }), createCourse);
 
 const validateCourseId = validateRequest({ params: CourseIdSchema });
 router
   .route("/:id")
-  .get(requireAuth, validateCourseId, getCourseById)
+  .get(validateCourseId, getCourseById)
   .patch(
-    requireAuth,
     validateCourseId,
     validateRequest({ body: UpdateCourseSchema }),
     updateCourse,
   )
-  .delete(requireAuth, requireRole("admin"), validateCourseId, deleteCourse);
+  .delete(requireRole("admin"), validateCourseId, deleteCourse);
 
 export default router;

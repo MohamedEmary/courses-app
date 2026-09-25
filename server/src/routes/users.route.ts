@@ -12,20 +12,20 @@ import { UserIdSchema } from "@/schemas/user.schema.ts";
 
 const router = Router();
 
+// Every user route is authenticated.
+router.use(requireAuth);
+
 router
   .route("/")
   .get(
-    requireAuth,
     requireRole("admin"),
     validateRequest({ query: PaginationSchema }),
     getAllUsers,
   );
 
-router.route("/me").get(requireAuth, getCurrentUser);
+router.route("/me").get(getCurrentUser);
 
 const validateUserId = validateRequest({ params: UserIdSchema });
-router
-  .route("/:id")
-  .delete(requireAuth, requireRole("admin"), validateUserId, deleteUser);
+router.route("/:id").delete(requireRole("admin"), validateUserId, deleteUser);
 
 export default router;
