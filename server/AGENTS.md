@@ -56,7 +56,7 @@ Express 5 + TypeScript REST API (Mongoose, Zod, JWT, Multer). Read [`README.md`]
 - **Coverage**: keep **100% test coverage**: `pnpm test:coverage` (v8 provider over `src/**`, excluding `main.ts`). Add a test for any uncovered statement/branch in new or edited code; don't ship code that drops coverage below 100%.
 - **Utils**: helpers live in `src/utils/` with a filename matching the exported function name (e.g. `getUserRoleForEmail` → `src/utils/getUserRoleForEmail.ts`); the unit test shares that name.
 - **Skills**: project AI skills live in `.agents/skills/` (usable by any AI agent): `bruno-collection-generator`, `node`, `code-review`, `grill-me` (+ deps `grilling`, `setup-matt-pocock-skills`).
-- **Architecture**: Express 5; Mongoose models; Zod schemas validated by `validateRequest` (attaches `validatedBody` / `validatedQuery` / `validatedParams`); `asyncHandler` wraps handlers; handlers throw `AppError` subclasses caught by `errorHandler`.
+- **Architecture**: Express 5; Mongoose models; Zod schemas validated by `validateRequest` (attaches `validatedBody` / `validatedQuery` / `validatedParams`); handlers are async and Express 5 forwards their rejected promises to `errorHandler`, which catches the `AppError` subclasses they throw (no wrapper needed).
 - **Auth**: JWT access token (15 min) returned in the body; refresh token in an `httpOnly`, `sameSite: lax` cookie at path `/api/auth/refresh`. Roles: emails ending in `@emary.dev` get `admin`, otherwise `user`.
 - **Responses**: every endpoint uses the JSend envelope (`success` / `fail` / `error`); see README "Response Format".
 - **CORS**: public API: `origin: true, credentials: true` in `app.ts`.

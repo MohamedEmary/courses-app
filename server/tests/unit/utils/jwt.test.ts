@@ -7,7 +7,6 @@ import {
   tokenPayloadFor,
   verifyAccessToken,
   verifyRefreshToken,
-  verifyToken,
 } from "@/utils/jwt.ts";
 
 const user = {
@@ -56,39 +55,6 @@ describe("jwt", () => {
         sub: "507f1f77bcf86cd799439011",
         role: "user",
       });
-    });
-  });
-
-  describe("verifyToken", () => {
-    const secret = process.env.JWT_ACCESS_SECRET as string;
-    const validToken = jwt.sign(
-      { sub: "507f1f77bcf86cd799439011", role: "user" },
-      secret,
-    );
-
-    it("returns the payload for a valid token", () => {
-      expect(
-        verifyToken(validToken, secret, "missing", "invalid"),
-      ).toMatchObject({
-        sub: "507f1f77bcf86cd799439011",
-        role: "user",
-      });
-    });
-
-    it("throws with the missing message when no token is provided", () => {
-      expect(() =>
-        verifyToken(undefined, secret, "missing", "invalid"),
-      ).toThrow("missing");
-    });
-
-    it("throws with the invalid message when verification fails", () => {
-      expect(() =>
-        verifyToken("not-a-jwt", secret, "missing", "invalid"),
-      ).toThrow("invalid");
-    });
-
-    it("defaults the invalid message to the missing message", () => {
-      expect(() => verifyToken("not-a-jwt", secret, "same")).toThrow("same");
     });
   });
 

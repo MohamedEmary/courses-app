@@ -34,6 +34,7 @@ const createApp = () => {
 
   // Disable response caching in development so code changes show immediately.
   if (process.env.NODE_ENV === "development") {
+    // app.use without a path applies to all routes, and the middleware is called in order of registration.
     app.use((_req, res, next) => {
       res.header("Cache-Control", "no-store");
       next();
@@ -50,20 +51,27 @@ const createApp = () => {
   );
   app.use(express.json()); // Parses JSON bodies
   app.use(cookieParser);
+
   // Serve uploads only under the /uploads URL prefix.
-  app.use(`/${UPLOAD_DIR}`, express.static(UPLOAD_DIR_PATH));
+  app.use(
+    `/${UPLOAD_DIR}`, // URL prefix
+    express.static(UPLOAD_DIR_PATH), // On-disk path
+  );
 
   app.use(API_ROUTES.COURSES, courseRoutes);
   app.use(API_ROUTES.AUTH, authRoutes);
   app.use(API_ROUTES.USERS, userRoutes);
 
   // catch all route for undefined routes
-  app.all("*path", (_, res) => {
-    res.status(404).json({
-      status: RESPONSE_STATUS.FAIL,
-      data: { message: "Resource Not Found" },
-    });
-  });
+  app.all(
+    "*path", // Express V5 path-to-regexp
+    (_, res) => {
+      res.status(404).json({
+        status: RESPONSE_STATUS.FAIL,
+        data: { message: "Resource Not Found" },
+      });
+    },
+  );
 
   app.use(errorHandler);
 

@@ -4,20 +4,11 @@ import request from "supertest";
 /**
  * Extract the `refreshToken=...` pair from a `set-cookie` header.
  *
- * @param {string | string[] | undefined} setCookieHeader - The raw `set-cookie` header value(s).
+ * @param {string[]} setCookie - The raw `set-cookie` header values.
  * @returns {string | undefined} The raw `refreshToken=...` pair, without the trailing cookie attributes.
  */
-export const extractRefreshCookie = (
-  setCookieHeader: string | string[] | undefined,
-): string | undefined => {
-  const cookies = Array.isArray(setCookieHeader)
-    ? setCookieHeader
-    : setCookieHeader
-      ? [setCookieHeader]
-      : [];
-  const cookie = cookies.find((c) => c.startsWith("refreshToken="));
-  return cookie?.split(";")[0];
-};
+const extractRefreshCookie = (setCookie: string[]): string | undefined =>
+  setCookie.find((c) => c.startsWith("refreshToken="))?.split(";")[0];
 /**
  * Normalize a `set-cookie` header into an array of raw cookie strings.
  *
@@ -47,13 +38,17 @@ export type AuthResult = {
   setCookie: string[];
 };
 
-const toResult = (res: request.Response): AuthResult => ({
-  status: res.status,
-  body: res.body as Record<string, any>,
-  accessToken: res.body?.data?.accessToken as string | undefined,
-  refreshCookie: extractRefreshCookie(res.headers["set-cookie"]),
-  setCookie: getSetCookie(res.headers),
-});
+const toResult = (res: request.Response): AuthResult => {
+  const setCookie = getSetCookie(res.headers);
+
+  return {
+    status: res.status,
+    body: res.body as Record<string, any>,
+    accessToken: res.body?.data?.accessToken as string | undefined,
+    refreshCookie: extractRefreshCookie(setCookie),
+    setCookie,
+  };
+};
 
 /**
  * Register a test user and return the parsed auth result.
