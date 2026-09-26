@@ -115,5 +115,4 @@ export {
   tokenPayloadFor,
   verifyAccessToken,
   verifyRefreshToken,
-  verifyToken,
 };
