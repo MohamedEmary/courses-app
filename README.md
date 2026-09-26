@@ -36,6 +36,59 @@ flowchart LR
   end
 ```
 
+## Architecture
+
+```mermaid
+flowchart TD
+    Client([Client / Browser / Bruno])
+
+    subgraph Entry ["App Entry"]
+        Main["main.ts<br/>(Bootstrap & Listen)"]
+        App["app.ts<br/>(createApp & Global Middleware)"]
+    end
+
+    subgraph Middleware ["Global Middleware"]
+        CORS["cors"]
+        JSON["express.json"]
+        Cookie["cookieParser"]
+        Static["express.static (/uploads)"]
+    end
+
+    subgraph Routing ["Routes (/api)"]
+        RAuth["/auth (auth.route.ts)"]
+        RCourse["/course (courses.route.ts)"]
+        RUser["/users (users.route.ts)"]
+    end
+
+    subgraph Guards ["Route Guards & Validation"]
+        V["validateRequest (Zod)"]
+        A["requireAuth (JWT Access)"]
+        Role["requireRole (admin)"]
+    end
+
+    subgraph Controllers ["Controllers"]
+        CAuth["auth.controller.ts"]
+        CCourse["courses.controller.ts"]
+        CUser["users.controller.ts"]
+    end
+
+    subgraph DataLayer ["Data & Errors"]
+        DB[("MongoDB (Mongoose)")]
+        Err["errorHandler (JSend)"]
+    end
+
+    Client -->|HTTP Request| Main --> App
+    App --> Middleware --> Routing
+
+    RAuth --> V --> CAuth
+    RCourse --> A --> Role --> V --> CCourse
+    RUser --> A --> Role --> V --> CUser
+
+    CAuth & CCourse & CUser --> DB
+    CAuth & CCourse & CUser -.->|Throws AppError| Err
+    Err -->|JSend Response| Client
+```
+
 ## Quick start (server)
 
 ```bash
